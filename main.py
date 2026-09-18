@@ -19,7 +19,8 @@ app.include_router(admin.router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173",
-                  "https://libagent.netlify.app"
+                  "https://libagent.netlify.app",
+                   "https://library-management-lime-zeta.vercel.app"
                   ],
 
     
