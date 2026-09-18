@@ -126,7 +126,7 @@ def create_issue(user: user_dependency, db: db_dependency, issue_request: IssueB
         raise HTTPException(status_code=400, detail='No Copies Available')
 
     loan_days = 14
-    issue_date = datetime.now
+    issue_date = datetime.now()
 
     issue_model = IssueRecords(
         book_id = issue_request.book_id,
