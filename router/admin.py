@@ -54,6 +54,7 @@ def calculate_fine(due_date: datetime, return_date: datetime):
     else:
         return 0.0
 
+
 @router.post('/admin/create_book')
 def create_book(user: user_dependency, db: db_dependency, new_book: BookCreate):
 
@@ -142,7 +143,7 @@ def create_issue(user: user_dependency, db: db_dependency, issue_request: IssueB
         Reservations.book_id == issue_request.book_id,
         Reservations.user_id == issue_request.user_id,
         Reservations.status == 'pending'
-    )
+    ).first()
 
     if reservation is not None:
         reservation.status = 'approved'
@@ -163,7 +164,7 @@ def return_book(user: user_dependency, db: db_dependency, issue_id: int):
     if issue is None:
         raise HTTPException(status_code=404, detail='Issue record not found')
 
-    return_date = datetime.now
+    return_date = datetime.now()
     fine = calculate_fine(issue.due_date, return_date)
 
     issue.return_date = return_date
@@ -177,6 +178,7 @@ def return_book(user: user_dependency, db: db_dependency, issue_id: int):
     db.commit()
 
     return JSONResponse(status_code=201, content={'message': 'Book returned successfully', 'fine_amount': fine})
+
 
 @router.put('/admin/fine/pay/{issue_id}')
 def fine_paid(user: user_dependency, db: db_dependency, issue_id: int):
